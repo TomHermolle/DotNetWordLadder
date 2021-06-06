@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DotNetWordLadder": {
+      "commandName": "Project",
+      "commandLineArgs": "-s \"sail\" -e \"raid\" -d \"\" -r \"\""
+    }
+  }
+}
