@@ -1,12 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using CommandLine;
 
 namespace DotNetWordLadder
 {
     internal class Program
     {
+        /// <summary>
+        /// Driver method to parse and validate input arguments, execute a traversal through an input dictionary, and output a file of word ladder results.
+        /// </summary>
+        /// <param name="args">Four arguments expected as specified in the properties of the CommandLineOptions class</param>
+        /// <returns>Integer return code, zero on successful completion</returns>
         private static int Main(string[] args)
         {
             try
@@ -16,7 +19,8 @@ namespace DotNetWordLadder
                         (options) =>
                         {
                             options.ValidateArguments();
-                            ExecuteWordLadder(options.StartWord,options.EndWord);
+
+                            ExecuteWordLadder(options.StartWord,options.EndWord,options.DictionaryFile,options.ResultFile,options.WordLength);
                             return 0;
                         },
                         errors => 1);
@@ -28,10 +32,15 @@ namespace DotNetWordLadder
             }
         }
 
-        private static void ExecuteWordLadder(string start, string end)
+
+        private static void ExecuteWordLadder(string startWord, string endWord, string dictionaryFile, string resultFile, int wordLength)
         {
-            var results = FindWordLadders(start, end,
-                new List<string> { "sail", "mail", "rain", "nail", "pain", "main", "rail", "pail", "ruin" ,"main","seal","meal","real","peal","mall","pall","said","maid","paid","raid"});
+            var cleanDictionary = DictionaryFactory.GetDictionary(dictionaryFile, wordLength);
+            var wordLadder = new WordLadder(startWord, endWord, cleanDictionary);
+            var results = wordLadder.GetLadders();
+            
+            //var results = FindWordLadders(start, end,
+            //    new List<string> { "sail", "mail", "rain", "nail", "pain", "main", "rail", "pail", "ruin" ,"main","seal","meal","real","peal","mall","pall","said","maid","paid","raid"});
 
             var resultCount = results.Count;
             for (var i = 0; i < resultCount; ++i)
@@ -47,50 +56,6 @@ namespace DotNetWordLadder
             }
         }
 
-        private static List<LinkedList<string>> FindWordLadders(string startWord, string endWord, List<string> dictionary)
-        {
-            var results = new List<LinkedList<string>>();
-            var currentLevelNodeLinkedLists = new List<LinkedList<string>> { new (new[] { startWord }) };
-            var endWordReached = false;
 
-            while (currentLevelNodeLinkedLists.Count != 0 && !endWordReached)
-            {
-                var nextLevelNodeLinkedLists = new List<LinkedList<string>>();
-                foreach (var currentLevelNodeLinkedList in currentLevelNodeLinkedLists)
-                {
-                    //If we've found a word that is only one step from the end word, link the nodes and add to the results list
-                    if (WordsDifferByOneCharacter(endWord, currentLevelNodeLinkedList.Last?.Value))
-                    {
-                        currentLevelNodeLinkedList.AddLast(endWord);
-                        results.Add(currentLevelNodeLinkedList);
-                        //the end word has been reached so once we've checked all nodes at this level we can finish processing
-                        endWordReached = true;
-                        continue;
-                    }
-
-                    //From the current word, add to the next level node list the set of dictionary words differing by only one character
-                    for (var i = dictionary.Count() - 1; i >= 0; i--)
-                    {
-                        if (!WordsDifferByOneCharacter(currentLevelNodeLinkedList.Last?.Value, dictionary[i])) continue;
-
-                        var nextLevelNodeLinkedList = new LinkedList<string>(currentLevelNodeLinkedList.ToArray());
-                        nextLevelNodeLinkedList.AddLast(dictionary[i]);
-                        nextLevelNodeLinkedLists.Add(nextLevelNodeLinkedList);
-                        //remove processed words from the dictionary so we don't traverse back "up" the graph next iteration
-                        dictionary.RemoveAt(i);
-                    }
-                }
-
-                //Shift to the next level of nodes to traverse 
-                currentLevelNodeLinkedLists = nextLevelNodeLinkedLists;
-            }
-
-            return results;
-        }
-
-        private static bool WordsDifferByOneCharacter(string word1, string word2)
-        {
-            return word1.Where((character, i) => !character.Equals(word2[i])).Count() == 1;
-        }
     }
 }
