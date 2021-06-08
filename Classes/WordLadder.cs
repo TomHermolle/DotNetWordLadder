@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using DotNetWordLadder.Interfaces;
 
 namespace DotNetWordLadder
 {
-    internal class WordLadder : IWordLadder<LinkedList<string>>
+    internal class WordLadder : IWordLadder
     {
         private readonly string _startWord;
         private readonly string _endWord;

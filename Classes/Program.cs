@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using CommandLine;
 
 namespace DotNetWordLadder
@@ -7,6 +8,7 @@ namespace DotNetWordLadder
     {
         /// <summary>
         /// Driver method to parse and validate input arguments, execute a traversal through an input dictionary, and output a file of word ladder results.
+        /// Uses the CommandLineParser nuget package for argument syntax parsing: https://github.com/commandlineparser/commandline.
         /// </summary>
         /// <param name="args">Four arguments expected as specified in the properties of the CommandLineOptions class</param>
         /// <returns>Integer return code, zero on successful completion</returns>
@@ -15,46 +17,47 @@ namespace DotNetWordLadder
             try
             {
                 return Parser.Default.ParseArguments<CommandLineOptions>(args)
-                    .MapResult(
-                        (options) =>
+                    .MapResult(options =>
                         {
                             options.ValidateArguments();
 
-                            ExecuteWordLadder(options.StartWord,options.EndWord,options.DictionaryFile,options.ResultFile,options.WordLength);
+                            var stopWatch = new Stopwatch();
+                            stopWatch.Start();
+
+                            var runner = new WordLadderRunner(
+                                    options.StartWord,
+                                    options.EndWord,
+                                    new WordLadderDictionary(options.DictionaryFile, options.WordLength),
+                                    new ResultsWriter(options.ResultFile))
+                                .Run()
+                                .WriteResults();
+
+                            stopWatch.Stop();
+
+                            Console.WriteLine("Result lists; {0} | Ladder length; {1} | Processing time (ms); {2}",runner.Results.Count,runner.Results[0].Count, stopWatch.Elapsed.Milliseconds);
+
                             return 0;
                         },
-                        errors => 1);
+                        _ => 1);
             }
             catch (ArgumentException ex)
             {
                 Console.WriteLine("Invalid arguments detected: {0}", ex);
                 return 1;
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Unexpected error: {0}", ex);
+                return 2;
+            }
         }
 
 
-        private static void ExecuteWordLadder(string startWord, string endWord, string dictionaryFile, string resultFile, int wordLength)
-        {
-            var cleanDictionary = DictionaryFactory.GetDictionary(dictionaryFile, wordLength);
-            var wordLadder = new WordLadder(startWord, endWord, cleanDictionary);
-            var results = wordLadder.GetLadders();
             
             //var results = FindWordLadders(start, end,
             //    new List<string> { "sail", "mail", "rain", "nail", "pain", "main", "rail", "pail", "ruin" ,"main","seal","meal","real","peal","mall","pall","said","maid","paid","raid"});
 
-            var resultCount = results.Count;
-            for (var i = 0; i < resultCount; ++i)
-            {
-                Console.WriteLine("Solution path {0} of {1}", i+1, resultCount);
-                Console.WriteLine("------------------------");
 
-                foreach (var word in results[i])
-                {
-                    Console.WriteLine(word);
-                }
-                Console.WriteLine();
-            }
-        }
 
 
     }
