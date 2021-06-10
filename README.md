@@ -90,9 +90,9 @@ The filtered dictionary words are stored in a `List<string>`. Iterating through 
 * The solution contains two projects:
     - `DotNetWordLadder`: .Net 5.0 C# console app project containing the solution implementation
     - `DotNetWordLadder.Tests`: .Net 5.0 console app project containing xUnit automated unit tests
-* Entry point is [`Program.Main`](.\DotNetWordLadder\Program.cs), which is simply a driver method to setup and run the main processing class. It returns an integer return code, non-zero on error.
+* Entry point is [`Program.Main`](./DotNetWordLadder/Program.cs), which is simply a driver method to setup and run the main processing class. It returns an integer return code, non-zero on error.
 * The [CommandLineParser](https://github.com/commandlineparser/commandline) nuget package is used to parse and validate the input arguments.
-* The main processing logic is contained in the [`DotNetWordLadder.Execution.WordLadder`](.\DotNetWordLadder\Execution\WordLadder.cs) class, which is hosted and run by an instance of the [`DotNetWordLadder.Execution.WordLadderRunner`](.\DotNetWordLadder\Execution\WordLadderRunner.cs) class.
+* The main processing logic is contained in the [`DotNetWordLadder.Execution.WordLadder`](./DotNetWordLadder/Execution/WordLadder.cs) class, which is hosted and run by an instance of the [`DotNetWordLadder.Execution.WordLadderRunner`](./DotNetWordLadder/Execution/WordLadderRunner.cs) class.
 
 ## Unit testing
 
