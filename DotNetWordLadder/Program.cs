@@ -3,7 +3,6 @@ using System.Diagnostics;
 using CommandLine;
 using DotNetWordLadder.Config;
 using DotNetWordLadder.Execution;
-using DotNetWordLadder.IO;
 
 namespace DotNetWordLadder
 {
@@ -28,7 +27,7 @@ namespace DotNetWordLadder
                             stopWatch.Start();
 
                             var runner = new WordLadderRunner(
-                                    new WordLadderConfig(options),
+                                    new WordLadder(new WordLadderConfig(options)),
                                     new ResultsWriter(options.ResultFile))
                                 .Run()
                                 .WriteResults();
@@ -52,14 +51,5 @@ namespace DotNetWordLadder
                 return 2;
             }
         }
-
-
-            
-            //var results = FindWordLadders(start, end,
-            //    new List<string> { "sail", "mail", "rain", "nail", "pain", "main", "rail", "pail", "ruin" ,"main","seal","meal","real","peal","mall","pall","said","maid","paid","raid"});
-
-
-
-
     }
 }

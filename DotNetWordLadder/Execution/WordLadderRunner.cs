@@ -1,30 +1,30 @@
-﻿using System.Collections.Generic;
-using DotNetWordLadder.Config;
+﻿using System;
+using System.Collections.Generic;
 using DotNetWordLadder.Interfaces;
 
 namespace DotNetWordLadder.Execution
 {
     internal class WordLadderRunner
     {
-        public IWordLadder WordLadder { get;}
         public IList<LinkedList<string>> Results { get; private set; }
-        public IResultsWriter ResultsWriter { get; }
+        private readonly IResultsWriter _resultsWriter;
+        private readonly IWordLadder _wordLadder;
 
-        public WordLadderRunner(WordLadderConfig config, IResultsWriter resultsWriter)
+        public WordLadderRunner(IWordLadder wordLadder, IResultsWriter resultsWriter)
         {
-            ResultsWriter = resultsWriter;
-            WordLadder = new WordLadder(config);
+            _resultsWriter = resultsWriter;
+            _wordLadder = wordLadder;
         }
 
         public WordLadderRunner Run()
         {
-            Results = WordLadder.GetLadders();
+            Results = _wordLadder.GetLadders();
             return this;
         }
 
         public WordLadderRunner WriteResults()
         {
-            ResultsWriter.WriteResults(Results);
+            _resultsWriter.WriteResults(Results);
             return this;
         }
     }

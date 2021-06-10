@@ -2,7 +2,7 @@
   "profiles": {
     "DotNetWordLadder": {
       "commandName": "Project",
-      "commandLineArgs": "-s \"sail\" -e \"raid\" -d \"C:\\Temp\\Blue Prism\\words-english.txt\" -r \"C:\\Temp\\Blue Prism\\results\\results.txt\""
+      "commandLineArgs": "-s \"moon\" -e \"risk\" -d \"C:\\Temp\\Blue Prism\\words-english.txt\" -r \"C:\\Temp\\Blue Prism\\results\\results.txt\""
     }
   }
 }
