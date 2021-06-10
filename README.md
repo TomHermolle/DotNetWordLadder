@@ -101,6 +101,6 @@ The code is structured to aid the setup of mock objects for automated unit testi
 * Dependency injection of interfaces 
 * Parameterless constructors and virtual methods in classes where interface implementation would be overkill
 
-The `DotNetWordLadder.Tests` project uses the [xUnit](https://xunit.net/) framework, and the [Moq](https://github.com/moq/moq4/wiki) mocking library.
+The `DotNetWordLadder.Tests` project uses the [xUnit](https://xunit.net/) framework, and the [Moq](https://github.com/Moq/moq4/wiki/Quickstart) mocking library.
 
 Tests have been written for the public methods of the ResultsWriter, WordLadder, and WordLadderConfig classes, demonstrating how WordLadder can be tested independently of the file system. 
