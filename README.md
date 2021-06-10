@@ -104,3 +104,10 @@ The code is structured to aid the setup of mock objects for automated unit testi
 The `DotNetWordLadder.Tests` project uses the [xUnit](https://xunit.net/) framework, and the [Moq](https://github.com/Moq/moq4/wiki/Quickstart) mocking library.
 
 Tests have been written for the public methods of the ResultsWriter, WordLadder, and WordLadderConfig classes, demonstrating how WordLadder can be tested independently of the file system. 
+
+## To do
+
+* Implementation of a DFS algorithm for comparative performance testing
+* Addition of logging using `ILogger` to Application Insights
+* Further maintainability improvements to allow WordLadder to be hosted as a web service
+* Improved validation and robustness of file system access
