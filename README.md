@@ -42,7 +42,7 @@ Instead, my chosen strategy is first to filter the dictionary to contain only th
 ### Pseudo-code
 
 ```
-    Loop from StartWord while dictionary words exist and not EndWordFound
+    Loop from StartWord while child words exist in the dictionary and not EndWordFound
     {
         ForEach CurrentWord at current level in graph
         {
