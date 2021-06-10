@@ -22,7 +22,7 @@ namespace DotNetWordLadder.Config
         [Option('r', "ResultFile", Required = true, HelpText = "Path to output file containing solution word ladder(s).")]
         public virtual string ResultFile { get; set; }
 
-        [Option('l', "WordLength", Required = false, HelpText = "Length of words to extract from dictionary.",Default = 4)]
+        [Option(Hidden=true)]
         public virtual int WordLength { get; set; }
 
         /// <summary>
@@ -32,10 +32,12 @@ namespace DotNetWordLadder.Config
         {
             if (!File.Exists(DictionaryFile)) throw new ArgumentException($"DictionaryFile '{DictionaryFile}' does not exist");
             if (Path.GetExtension(ResultFile) != ".txt") throw new ArgumentException($"ResultFile '{ResultFile}' must have a file extension of '.txt'");
-            if (!Directory.Exists(Path.GetDirectoryName(ResultFile))) throw new ArgumentException($"ResultFile directory '{Path.GetDirectoryName(ResultFile)}' does not exist");
-            if (StartWord.Length != 4) throw new ArgumentException($"StartWord '{StartWord}' is not 4 characters long");
-            if (EndWord.Length != 4) throw new ArgumentException($"EndWord '{EndWord}' is not 4 characters long");
-            if (WordLength <= 0) throw new ArgumentException($"WordLength '{WordLength}' is not > 0");
+            if (!Directory.Exists(Path.GetDirectoryName(ResultFile))) throw new ArgumentException($"ResultFile directory '{Path.GetDirectoryName(ResultFile)}' does not exist, path must be specified");
+            if (StartWord.Length < 4) throw new ArgumentException($"StartWord '{StartWord}' must be at least 4 characters long");
+            if (EndWord.Length < 4) throw new ArgumentException($"EndWord '{EndWord}' must be at least 4 characters long");
+            if (StartWord.Length != EndWord.Length) throw new ArgumentException($"StartWord '{StartWord}' and EndWord '{EndWord}' must be the same length");
+            //if (WordLength < 4) throw new ArgumentException($"WordLength '{WordLength}' must be >= 4");
+            WordLength = StartWord.Length;
         }
     }
 }

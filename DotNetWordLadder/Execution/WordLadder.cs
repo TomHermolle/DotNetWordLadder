@@ -26,7 +26,7 @@ namespace DotNetWordLadder.Execution
             var currentLevelNodeLinkedLists = new List<LinkedList<string>> { new(new[] { _startWord }) };
             var endWordReached = false;
 
-            while (currentLevelNodeLinkedLists.Count != 0 && !endWordReached)
+            while (!(currentLevelNodeLinkedLists.Count == 0 || endWordReached))
             {
                 var nextLevelNodeLinkedLists = new List<LinkedList<string>>();
                 foreach (var currentLevelNodeLinkedList in currentLevelNodeLinkedLists)

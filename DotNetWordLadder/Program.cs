@@ -34,7 +34,7 @@ namespace DotNetWordLadder
 
                             stopWatch.Stop();
 
-                            Console.WriteLine("Result lists; {0} | Ladder length; {1} | Processing time (ms); {2}",runner.Results.Count,runner.Results[0].Count, stopWatch.Elapsed.Milliseconds);
+                            Console.WriteLine("Result lists; {0} | Ladder length; {1} | Processing time (ms); {2}",runner.Results.Count,runner.Results.Count>0 ? runner.Results[0].Count : 0, stopWatch.Elapsed.Milliseconds);
 
                             return 0;
                         },
